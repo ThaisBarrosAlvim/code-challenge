@@ -1,0 +1,107 @@
+version: 1
+default_environment: dev
+project_id: 77cbc4d4-d55c-4703-a8c6-2c4438472fcc
+environments:
+  - name: dev
+  - name: staging
+  - name: prod
+
+plugins:
+  extractors:
+    - name: tap-postgres
+      variant: meltanolabs
+      pip_url: git+https://github.com/MeltanoLabs/tap-postgres.git
+      config:
+        dbname: northwind
+        schema: public
+        database: northwind
+        host: localhost
+        port: 5432
+        user: northwind_user
+        password: thewindisblowing
+      select:
+        - public-*.*
+
+    - name: tap-csv
+      variant: meltanolabs
+      pip_url: git+https://github.com/MeltanoLabs/tap-csv.git
+      config: { files: [ {      entity: order_details, path: ../data/order_details.csv, keys: [
+        order_id, product_id ], delimiter: ',' } ] }
+
+    - name: tap-singer-jsonl
+      variant: kgpayne
+      pip_url: tap-singer-jsonl
+      config:
+        source: local
+        local:
+          folders:
+            - ../data/csv/order_details/${RUN_DATE}
+            - ../data/postgres/categories/${RUN_DATE}
+            - ../data/postgres/customers/${RUN_DATE}
+            - ../data/postgres/customer_customer_demo/${RUN_DATE}
+            - ../data/postgres/customer_demographics/${RUN_DATE}
+            - ../data/postgres/customers/${RUN_DATE}
+            - ../data/postgres/employee_territories/${RUN_DATE}
+            - ../data/postgres/employees/${RUN_DATE}
+            - ../data/postgres/orders/${RUN_DATE}
+            - ../data/postgres/products/${RUN_DATE}
+            - ../data/postgres/region/${RUN_DATE}
+            - ../data/postgres/shippers/${RUN_DATE}
+            - ../data/postgres/suppliers/${RUN_DATE}
+            - ../data/postgres/territories/${RUN_DATE}
+            - ../data/postgres/us_states/${RUN_DATE}
+          recursive: false
+        add_record_metadata: false
+
+  loaders:
+    - name: target-postgres
+      variant: transferwise
+      pip_url: pipelinewise-target-postgres
+      config:
+        dbname: northwind_target
+        schema: public
+        database: northwind_target
+        host: localhost
+        port: 5434
+        user: northwind_target_user
+        password: thewindisblowing
+
+    - name: target-singer-jsonl
+      variant: kgpayne
+      pip_url: target-singer-jsonl
+      config:
+        destination: local
+        local:
+          folder: ../data/target-singer-jsonl
+        add_record_metadata: false
+
+  utilities:
+    - name: organiza_singer_jsonl
+      namespace: organiza_singer_jsonl
+      commands:
+        run_postgres:
+          args: py/organiza_singer_jsonl.py postgres
+          executable: python
+        run_csv:
+          args: py/organiza_singer_jsonl.py csv
+          executable: python
+
+jobs:
+  - name: extract-and-organize-singer-jsonl-csv
+    tasks:
+      - tap-csv target-singer-jsonl organiza_singer_jsonl:run_csv
+
+  - name: extract-and-organize-singer-jsonl-postgres
+    tasks:
+      - tap-postgres target-singer-jsonl organiza_singer_jsonl:run_postgres
+
+  - name: load-in-postgres
+    tasks:
+      - tap-singer-jsonl target-postgres
+
+  # only used for testing
+  - name: full-pipeline
+    tasks:
+      - tap-csv target-singer-jsonl organiza_singer_jsonl:run_csv
+      - tap-postgres target-singer-jsonl organiza_singer_jsonl:run_postgres
+      - tap-singer-jsonl target-postgres
