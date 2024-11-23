@@ -67,6 +67,7 @@ The pipeline writes this data to local storage (organized by source, table, and 
 
 3. **Configure Meltano**:
    ```bash
+   docker compose exec meltano meltano lock --update --all
    docker compose exec meltano meltano install
    ```
 
