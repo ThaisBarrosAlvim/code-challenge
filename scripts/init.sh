@@ -1,1 +1,1 @@
-chmod 744 -R airflow/
+sudo chmod 774 -R airflow/
