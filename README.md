@@ -60,20 +60,20 @@ The pipeline writes this data to local storage (organized by source, table, and 
    cd code-challenge
    ```
 
-2. **Start Services**:
+2. **Update Airflow Permissions**:
+   ```bash
+   sudo chmod u=rwx,g=rwx,o=rwx -R airflow/
+   ```
+
+3. **Start Services**:
    ```bash
    docker compose up -d
    ```
 
-3. **Configure Meltano**:
+4. **Configure Meltano**:
    ```bash
    docker compose exec meltano meltano lock --update --all
    docker compose exec meltano meltano install
-   ```
-
-4. **Verify Setup**:
-   ```bash
-   docker compose exec meltano meltano status
    ```
 
 5. **Access the Airflow UI**:
