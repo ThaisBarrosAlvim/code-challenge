@@ -60,30 +60,19 @@ The pipeline writes this data to local storage (organized by source, table, and 
    cd code-challenge
    ```
 
-2. **Update Airflow Permissions**:
+2. **Run the Setup Script**:
+   Use the provided Bash script to set up Meltano and Airflow variables and run the Docker Compose service. Replace `<meltano-path>` and `<data-path>` with the appropriate full paths for your system:
    ```bash
-   sudo chmod u=rwx,g=rwx,o=rwx -R airflow/
-   sudo chmod 777 /var/run/docker.sock
+   chmod +x scripts/init.sh
+   ./scripts/init.sh --meltano-path <meltano-path> --data-path <data-path>
    ```
 
-3. **Start Services**:
+   Example:
    ```bash
-   docker compose up -d
+   ./scripts/init.sh  --meltano-path /home/yourname/folder/code-challenge/meltano --data-path /home/yourname/folder/code-challenge/data
    ```
 
-4. **Configure Meltano**:
-   ```bash
-   docker compose exec meltano meltano lock --update --all
-   docker compose exec meltano meltano install
-   ```
-
-5. **Set Airflow ENV Vars (put your full path)**:
-    ```bash
-    docker compose exec airflow-scheduler airflow variables set HOST_PATH_MELTANO "/home/yourname/folder/code-challenge/meltano"
-    docker compose exec airflow-scheduler airflow variables set HOST_PATH_DATA "/home/yourname/folder/code-challenge/data"
-    ```
-
-6. **Access the Airflow UI**:
+3. **Access the Airflow UI**:
    - **URL**: `http://localhost:8080`
    - **Credentials**: `admin / admin`
 
