@@ -1,9 +1,9 @@
 import os
+from airflow.models import Variable
 from airflow import DAG
 from airflow.providers.docker.operators.docker import DockerOperator
 from airflow.utils.dates import days_ago
 from docker.types import Mount
-
 
 # Configurações padrão
 default_args = {
@@ -13,6 +13,10 @@ default_args = {
     'email_on_retry': False,
     'retries': 0
 }
+
+# Variáveis de path dinâmico
+host_path_meltano = Variable.get("HOST_PATH_MELTANO")
+host_path_data = Variable.get("HOST_PATH_DATA")
 
 # Criar DAG
 with DAG(
@@ -32,8 +36,8 @@ with DAG(
         docker_url='unix://var/run/docker.sock',
         network_mode='bridge',
         mounts=[
-            Mount(source='/home/thais/WorkSpaces/Indicium/Entry1/code-challenge/meltano', target='/project', type='bind'),
-            Mount(source='/home/thais/WorkSpaces/Indicium/Entry1/code-challenge/data', target='/data', type='bind'),
+            Mount(source=host_path_meltano, target='/project', type='bind'),
+            Mount(source=host_path_data, target='/data', type='bind'),
         ],
         working_dir='/project',
         environment={
@@ -42,8 +46,6 @@ with DAG(
         mount_tmp_dir=False,
         auto_remove='success',
         tty=True,
-        retrieve_output=True,
-        retrieve_output_path='/data/output/result.json',
     )
 
     execute_meltano_command_postgres = DockerOperator(
@@ -54,9 +56,8 @@ with DAG(
         docker_url='unix://var/run/docker.sock',
         network_mode='bridge',
         mounts=[
-            Mount(source='/home/thais/WorkSpaces/Indicium/Entry1/code-challenge/meltano', target='/project',
-                  type='bind'),
-            Mount(source='/home/thais/WorkSpaces/Indicium/Entry1/code-challenge/data', target='/data', type='bind'),
+            Mount(source=host_path_meltano, target='/project', type='bind'),
+            Mount(source=host_path_data, target='/data', type='bind'),
         ],
         working_dir='/project',
         environment={
@@ -65,7 +66,4 @@ with DAG(
         mount_tmp_dir=False,
         auto_remove='success',
         tty=True,
-        retrieve_output=True,
-        retrieve_output_path='/data/output/result.json',
     )
-

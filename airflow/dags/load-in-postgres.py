@@ -1,4 +1,5 @@
 import os
+from airflow.models import Variable
 from datetime import datetime
 from airflow import DAG
 from airflow.providers.docker.operators.docker import DockerOperator
@@ -17,6 +18,9 @@ default_args = {
 
 # Obter a data atual no formato desejado (YYYY-MM-DD)
 current_date = datetime.now().strftime('%Y-%m-%d')
+# Variáveis de path dinâmico
+host_path_meltano = Variable.get("HOST_PATH_MELTANO")
+host_path_data = Variable.get("HOST_PATH_DATA")
 
 # Criar DAG
 with DAG(
@@ -36,8 +40,8 @@ with DAG(
         docker_url='unix://var/run/docker.sock',
         network_mode='bridge',
         mounts=[
-            Mount(source='/home/thais/WorkSpaces/Indicium/Entry1/code-challenge/meltano', target='/project', type='bind'),
-            Mount(source='/home/thais/WorkSpaces/Indicium/Entry1/code-challenge/data', target='/data', type='bind'),
+            Mount(source=host_path_meltano, target='/project', type='bind'),
+            Mount(source=host_path_data, target='/data', type='bind'),
         ],
         working_dir='/project',
         environment={
