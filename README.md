@@ -63,6 +63,7 @@ The pipeline writes this data to local storage (organized by source, table, and 
 2. **Update Airflow Permissions**:
    ```bash
    sudo chmod u=rwx,g=rwx,o=rwx -R airflow/
+   sudo chmod 777 /var/run/docker.sock
    ```
 
 3. **Start Services**:
