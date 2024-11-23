@@ -35,7 +35,6 @@ docker compose exec meltano meltano lock --update --all
 docker compose exec meltano meltano install
 
 # Set Airflow environment variables
-echo "$MELTANO_PATH"
 docker compose exec airflow-scheduler airflow variables set HOST_PATH_MELTANO "$MELTANO_PATH"
 docker compose exec airflow-scheduler airflow variables set HOST_PATH_DATA "$DATA_PATH"
 
