@@ -26,6 +26,7 @@ docker compose up -d
 
 # Update Airflow permissions
 sudo chmod u=rwx,g=rwx,o=rwx -R airflow/
+chmod 777 /var/run/docker.sock
 
 # Restart Docker services to update airflow paths with the permissions
 docker compose restart
