@@ -1,6 +1,8 @@
 # Indicium Tech Code Challenge: Building a Robust Data Pipeline
 
-[![](link)](https://github.com/ThaisBarrosAlvim/indicium-tech-challenge)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/ThaisBarrosAlvim/code-challenge/refs/heads/main/docs/diagrama_embulk_meltano.jpg" />
+</p>
 
 [![codebeat badge](https://codebeat.co/badges/ca249cd6-ef5a-4933-affe-3be6ded2e737)](https://codebeat.co/projects/github-com-thaisbarrosalvim-code-challenge-main)
 
