@@ -78,10 +78,10 @@ The pipeline writes this data to local storage (organized by source, table, and 
    ```
 
 5. **Set Airflow ENV Vars (put your full path)**:
-```bash
-docker compose exec airflow-scheduler airflow variables set HOST_PATH_MELTANO "/home/yourname/folder/code-challenge/meltano"
-docker compose exec airflow-scheduler airflow variables set HOST_PATH_DATA "/home/yourname/folder/code-challenge/data"
-```
+    ```bash
+    docker compose exec airflow-scheduler airflow variables set HOST_PATH_MELTANO "/home/yourname/folder/code-challenge/meltano"
+    docker compose exec airflow-scheduler airflow variables set HOST_PATH_DATA "/home/yourname/folder/code-challenge/data"
+    ```
 
 6. **Access the Airflow UI**:
    - **URL**: `http://localhost:8080`
