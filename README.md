@@ -56,8 +56,8 @@ The pipeline writes this data to local storage (organized by source, table, and 
 ## Setup
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/ThaisBarrosAlvim/indicium-tech-challenge.git
-   cd indicium-tech-challenge
+   git clone https://github.com/ThaisBarrosAlvim/code-challenge.git
+   cd code-challenge
    ```
 
 2. **Start Services**:
