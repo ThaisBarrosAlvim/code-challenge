@@ -51,9 +51,6 @@ The pipeline writes this data to local storage (organized by source, table, and 
 - **Airflow**: For task scheduling and orchestration.
 - **Meltano**: For data extraction and loading.
 - **PostgreSQL**: As source and target databases.
-- **External PostgreSQL Databases**:
-  - Hosted on [Render](https://render.com/) due to local connection limitations (see [Future Improvements](#future-improvements)).
-
 ---
 
 ## Setup
