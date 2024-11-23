@@ -60,22 +60,30 @@ The pipeline writes this data to local storage (organized by source, table, and 
    cd code-challenge
    ```
 
-2. **Start Services**:
+2. **Update Airflow Permissions**:
+   ```bash
+   sudo chmod u=rwx,g=rwx,o=rwx -R airflow/
+   sudo chmod 777 /var/run/docker.sock
+   ```
+
+3. **Start Services**:
    ```bash
    docker compose up -d
    ```
 
-3. **Configure Meltano**:
+4. **Configure Meltano**:
    ```bash
+   docker compose exec meltano meltano lock --update --all
    docker compose exec meltano meltano install
    ```
 
-4. **Verify Setup**:
-   ```bash
-   docker compose exec meltano meltano status
-   ```
+5. **Set Airflow ENV Vars (put your full path)**:
+    ```bash
+    docker compose exec airflow-scheduler airflow variables set HOST_PATH_MELTANO "/home/yourname/folder/code-challenge/meltano"
+    docker compose exec airflow-scheduler airflow variables set HOST_PATH_DATA "/home/yourname/folder/code-challenge/data"
+    ```
 
-5. **Access the Airflow UI**:
+6. **Access the Airflow UI**:
    - **URL**: `http://localhost:8080`
    - **Credentials**: `admin / admin`
 
