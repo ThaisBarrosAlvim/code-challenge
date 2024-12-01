@@ -64,12 +64,7 @@ The pipeline writes this data to local storage (organized by source, table, and 
    Use the provided Bash script to set up Meltano and Airflow variables and run the Docker Compose service. Replace `<meltano-path>` and `<data-path>` with the appropriate full paths for your system:
    ```bash
    chmod +x scripts/init.sh
-   ./scripts/init.sh --meltano-path <meltano-path> --data-path <data-path>
-   ```
-
-   Example:
-   ```bash
-   ./scripts/init.sh  --meltano-path /home/yourname/folder/code-challenge/meltano --data-path /home/yourname/folder/code-challenge/data
+   ./scripts/init.sh
    ```
 
 3. **Access the Airflow UI**:
