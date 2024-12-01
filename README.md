@@ -61,7 +61,7 @@ The pipeline writes this data to local storage (organized by source, table, and 
    ```
 
 2. **Initial Setup** *(run only once)*:
-   Use the provided Bash script to perform the initial setup. Esse script configura as variáveis necessárias no Airflow e inicia os serviços do Docker Compose:
+   Use the provided Bash script to perform the initial setup. This script configures the necessary variables in Airflow and starts the Docker Compose services:
    ```bash
    chmod +x scripts/init.sh
    ./scripts/init.sh
