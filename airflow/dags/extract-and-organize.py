@@ -34,7 +34,7 @@ with DAG(
         command='run extract-and-organize-singer-jsonl-csv',
         api_version='auto',
         docker_url='unix://var/run/docker.sock',
-        network_mode='bridge',
+        network_mode='code-challenge_app_net',
         mounts=[
             Mount(source=host_path_meltano, target='/project', type='bind'),
             Mount(source=host_path_data, target='/data', type='bind'),
@@ -54,7 +54,7 @@ with DAG(
         command='run extract-and-organize-singer-jsonl-postgres',
         api_version='auto',
         docker_url='unix://var/run/docker.sock',
-        network_mode='bridge',
+        network_mode='code-challenge_app_net',
         mounts=[
             Mount(source=host_path_meltano, target='/project', type='bind'),
             Mount(source=host_path_data, target='/data', type='bind'),
