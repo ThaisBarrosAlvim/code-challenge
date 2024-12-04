@@ -18,7 +18,6 @@ This project implements a robust data pipeline to extract, store, and load data 
 3. [Requirements](#requirements)
 4. [Setup](#setup)
 5. [Usage](#usage)
-6. [Future Improvements](#future-improvements)
 
 ---
 
