@@ -12,12 +12,12 @@ plugins:
       variant: meltanolabs
       pip_url: git+https://github.com/MeltanoLabs/tap-postgres.git
       config:
-        dbname: northwind_0c1b
-        database: northwind_0c1b
-        host: dpg-ct0brtd6l47c7388nci0-a.oregon-postgres.render.com
+        dbname: northwind
+        database: northwind
+        host: db
         port: 5432
         user: northwind_user
-        password: 6ZTMbvry2Im2KckGennglqvz7KRw3GKO
+        password: thewindisblowing
         schema: public
       select:
         - public-*.*
@@ -60,10 +60,10 @@ plugins:
       config:
         dbname: northwind_target
         database: northwind_target
-        host: dpg-ct0c0q5umphs73f3tcrg-a.oregon-postgres.render.com
+        host: db
         port: 5432
         user: northwind_target_user
-        password: 8pod2pzmPmnzSCEU5b1KnC0aKwxh9Tk4
+        password: thewindisblowing
         schema: public
 
     - name: target-singer-jsonl

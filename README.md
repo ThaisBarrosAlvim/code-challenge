@@ -18,7 +18,6 @@ This project implements a robust data pipeline to extract, store, and load data 
 3. [Requirements](#requirements)
 4. [Setup](#setup)
 5. [Usage](#usage)
-6. [Future Improvements](#future-improvements)
 
 ---
 
@@ -60,19 +59,20 @@ The pipeline writes this data to local storage (organized by source, table, and 
    cd code-challenge
    ```
 
-2. **Run the Setup Script**:
-   Use the provided Bash script to set up Meltano and Airflow variables and run the Docker Compose service. Replace `<meltano-path>` and `<data-path>` with the appropriate full paths for your system:
+2. **Initial Setup** *(run only once)*:
+   Use the provided Bash script to perform the initial setup. This script configures the necessary variables in Airflow and starts the Docker Compose services:
    ```bash
    chmod +x scripts/init.sh
-   ./scripts/init.sh --meltano-path <meltano-path> --data-path <data-path>
+   ./scripts/init.sh
    ```
 
-   Example:
+3. **Starting the Environment** *(after the initial setup)*:
+   After running `init.sh` for the first time, to start the environment again in the future, simply use the standard Docker Compose commands:
    ```bash
-   ./scripts/init.sh  --meltano-path /home/yourname/folder/code-challenge/meltano --data-path /home/yourname/folder/code-challenge/data
+   docker compose up -d
    ```
 
-3. **Access the Airflow UI**:
+4. **Access the Airflow UI**:
    - **URL**: `http://localhost:8080`
    - **Credentials**: `admin / admin`
 
@@ -91,7 +91,7 @@ docker compose exec meltano meltano run extract-and-organize-singer-jsonl-postgr
 #### Step 2: Data Loading
 Load the extracted data into the target PostgreSQL database:
 ```bash
-docker compose exec meltano meltano run load-in-postgres
+docker compose exec -e RUN_DATE=$(date +%Y-%m-%d) meltano meltano run load-in-postgres
 ```
 
 ### Orchestrating with Airflow
@@ -112,13 +112,5 @@ Trigger the pipeline steps through Airflow DAGs:
 ### Reprocessing for Past Days
 Reprocess data for a specific past date using the `RUN_DATE` environment variable:
 ```bash
-docker compose exec meltano RUN_DATE=2024-11-23 meltano run load-in-postgres
+docker compose exec -e RUN_DATE=2024-11-23 meltano meltano run load-in-postgres
 ```
-
----
-
-## Future Improvements
-1. **Local Database Integration**:
-   - Due to limitations with `psycopg2` in the **target-postgres** and **tap-postgres** plugins when integrating Meltano with Airflow via Docker Operator, we had to use external PostgreSQL databases hosted on [Render](https://render.com/). This issue has been reported in the MeltanoLabs repository ([target-postgres issue #433](https://github.com/MeltanoLabs/target-postgres/issues/433)) and matches a similar problem discussed on [StackOverflow](https://stackoverflow.com/q/71116549).
-   - The error prevents successful connections to a local PostgreSQL instance in this setup. Resolving this issue would enable the use of local databases, improving performance, reducing external dependencies, and simplifying the deployment process.
-

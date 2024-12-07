@@ -1,25 +1,11 @@
 #!/bin/bash
 
-# Function to display usage information
-usage() {
-  echo "Usage: $0 --meltano-path <path> --data-path <path>"
-  exit 1
-}
+# Get current script directory
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
-# Parse arguments
-while [[ "$#" -gt 0 ]]; do
-  case $1 in
-    --meltano-path) MELTANO_PATH="$2"; shift ;;
-    --data-path) DATA_PATH="$2"; shift ;;
-    *) usage ;;
-  esac
-  shift
-done
-
-# Validate arguments
-if [[ -z "$MELTANO_PATH" || -z "$DATA_PATH" ]]; then
-  usage
-fi
+# Set paths based on script location
+MELTANO_PATH="$SCRIPT_DIR/../meltano"
+DATA_PATH="$SCRIPT_DIR/../data"
 
 # Start Docker services
 docker compose up -d

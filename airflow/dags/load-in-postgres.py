@@ -38,7 +38,7 @@ with DAG(
         command=f'run load-in-postgres',
         api_version='auto',
         docker_url='unix://var/run/docker.sock',
-        network_mode='bridge',
+        network_mode='code-challenge_app_net',
         mounts=[
             Mount(source=host_path_meltano, target='/project', type='bind'),
             Mount(source=host_path_data, target='/data', type='bind'),
@@ -46,9 +46,7 @@ with DAG(
         working_dir='/project',
         environment={
             'MELTANO_ENV': 'dev',
-            'RUN_DATE': current_date,
-            'DATABASE_URL': 'postgresql://u29ab7pcgqhpbv:pdd8a4078df84ad3d403aee1aacdc24e45075213d63f0c4d20d6164eaa260cade@cc0gj7hsrh0ht8.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d6fdgb0dvupqmd'
-
+            'RUN_DATE': current_date
         },
         mount_tmp_dir=False,
         auto_remove='success',
